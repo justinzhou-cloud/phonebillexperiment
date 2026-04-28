@@ -154,6 +154,31 @@
     .decision-label--active { color: var(--amber); }
     .decision-label--inactive { color: var(--muted); }
     .decision-desc { font-size: 12.5px; line-height: 1.5; color: var(--ink); }
+
+    /* ── Tabs ── */
+    .tabs {
+      background: var(--teal-dark); padding: 0 28px;
+      display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .tab-btn {
+      font-family: var(--font); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); background: none; border: none;
+      border-bottom: 2px solid transparent; padding: 12px 20px;
+      cursor: pointer; transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-btn:hover { color: rgba(255,255,255,0.92); }
+    .tab-btn.is-active { color: #fff; border-bottom-color: #fff; }
+    .tab-panel { display: none; }
+    .tab-panel.is-active { display: block; }
+
+    .cohort-banner {
+      background: var(--teal-xl); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;
+      font-size: 12.5px; line-height: 1.55; color: var(--ink);
+    }
+    .cohort-banner strong { color: var(--teal-dark); }
   </style>
 </head>
 <body>
@@ -163,6 +188,12 @@
   <div class="meta">DRI: Justin Zhou &nbsp;&bull;&nbsp; Promo window: April 1&ndash;30, 2026 &nbsp;&bull;&nbsp; Data as of Apr 28, 2026</div>
 </div>
 
+<nav class="tabs" id="cohort-tabs">
+  <button type="button" class="tab-btn is-active" data-tab="tab-all">All cohort</button>
+  <button type="button" class="tab-btn" data-tab="tab-new">Never paid phone bill</button>
+</nav>
+
+<div class="tab-panel is-active" id="tab-all">
 <div class="wrap">
 
   <!-- ── Verdict ── -->
@@ -729,6 +760,249 @@
   </div>
 
 </div>
+</div><!-- /tab-all -->
+
+<!-- ====================================================================== -->
+<!-- TAB 2 — never-paid-phone-bill cohort                                    -->
+<!-- ====================================================================== -->
+<div class="tab-panel" id="tab-new">
+<div class="wrap">
+
+  <div class="cohort-banner">
+    <strong>Cohort filter:</strong> Excluding all dashers who had ever paid a phone bill on Crimson before April 2026. This isolates the population the bonus was designed to activate (users with no prior phone bill behavior). Cohort size: <strong>158,799 control / 158,061 treatment</strong> (~80% of the original cohort).
+  </div>
+
+  <!-- ── Verdict ── -->
+  <div class="verdict-row">
+    <div class="verdict-card verdict-card--amber">
+      <div class="verdict-tag">Verdict (filtered cohort)</div>
+      <div class="verdict-headline">Cleaner signal: +9.5% relative lift in adoption among users who'd never paid a phone bill on Crimson, with cost per incremental payer cut from $333 to $118.</div>
+      <p class="verdict-sub">Removing historical phone bill payers (who would have paid regardless of the bonus) reveals the real adoption effect. Adoption goes from 1.94% &rarr; 2.12% (p &lt; 0.001). Durability still doesn&rsquo;t move (+0.07&nbsp;pp, n.s.). Total cost on this cohort: $32.5K vs. $125K full-cohort &mdash; the other $92.5K of the budget went to users who didn&rsquo;t need the incentive.</p>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-value kpi-value--green">+9.5%</div><div class="kpi-label">Relative lift in adoption</div></div>
+      <div class="kpi"><div class="kpi-value kpi-value--red">+2.0%</div><div class="kpi-label">Relative lift in durability (n.s.)</div></div>
+      <div class="kpi"><div class="kpi-value kpi-value--teal">$32.5K</div><div class="kpi-label">Total cashback owed (treatment)</div></div>
+      <div class="kpi"><div class="kpi-value kpi-value--amber">$118</div><div class="kpi-label">Cost per incremental payer</div></div>
+    </div>
+  </div>
+
+  <!-- ── 1. Adoption ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">1</span> H1: Did the incentive drive phone bill adoption?</div>
+    <div class="card-body">
+      <table>
+        <thead>
+          <tr><th></th><th class="num">Control</th><th class="num">Treatment</th><th class="num">Lift</th><th class="num">Sig?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cohort size</td><td class="num">158,799</td><td class="num">158,061</td><td class="num lift-flat">&mdash;</td><td class="num">&mdash;</td></tr>
+          <tr><td>Users who paid a phone bill in April</td><td class="num">3,079</td><td class="num">3,355</td><td class="num lift-pos">+276</td><td class="num">&mdash;</td></tr>
+          <tr><td><strong>% paid phone bill</strong></td><td class="num">1.94%</td><td class="num">2.12%</td><td class="num lift-pos">+0.18 pp (+9.5%)</td><td class="sig-yes">p &lt; 0.001</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout--teal">
+        <strong>Strongest adoption signal in the experiment.</strong> Among users with no prior phone bill history, the incentive drove a +9.5% relative lift in adoption (z&nbsp;=&nbsp;3.67, p&nbsp;&lt;&nbsp;0.001). The absolute lift (+0.18&nbsp;pp) is similar to the full-cohort number, but the relative lift is 2.7&times; larger because the baseline is much lower (1.94% vs. 6.03%).
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. Durability ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">2</span> H2: Did bill pay increase engagement / durability?</div>
+    <div class="card-body">
+      <table>
+        <thead>
+          <tr><th></th><th class="num">Control</th><th class="num">Treatment</th><th class="num">Lift</th><th class="num">Sig?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Durable users</td><td class="num">5,499</td><td class="num">5,582</td><td class="num lift-flat">+83</td><td class="num">&mdash;</td></tr>
+          <tr><td><strong>% durable</strong></td><td class="num">3.46%</td><td class="num">3.53%</td><td class="num lift-flat">+0.07 pp (+2.0%)</td><td class="sig-no">n.s. (p &asymp; 0.28)</td></tr>
+          <tr><td>Avg ancillary deposits</td><td class="num">$29.89</td><td class="num">$30.42</td><td class="num lift-flat">+1.8%</td><td class="num">&mdash;</td></tr>
+          <tr><td>Avg POS spend</td><td class="num">$246.25</td><td class="num">$247.52</td><td class="num lift-flat">+0.5%</td><td class="num">&mdash;</td></tr>
+          <tr><td>Avg dashing hours</td><td class="num">18.38</td><td class="num">18.32</td><td class="num lift-flat">~0%</td><td class="num">&mdash;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout--red">
+        <strong>Still no durability effect.</strong> Even on the cleaner cohort, durability moved by 0.07&nbsp;pp (+2.0% relative) which isn&rsquo;t statistically significant. Average ancillary deposits, POS spend, and dashing hours are all flat across treatment and control. Activating phone bill payment alone doesn&rsquo;t pull lower-engagement users toward durability within the promo month.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. Cost ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">3</span> Cost &amp; efficiency</div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th></th><th class="num">Control</th><th class="num">Treatment</th></tr></thead>
+        <tbody>
+          <tr><td>Payers</td><td class="num">3,079</td><td class="num">3,355</td></tr>
+          <tr><td>Total cashback owed</td><td class="num">$28,794</td><td class="num">$32,516</td></tr>
+          <tr><td>Avg payout per payer</td><td class="num">$9.35</td><td class="num">$9.69</td></tr>
+          <tr><td>Avg max phone bill</td><td class="num">$67.58</td><td class="num">$68.54</td></tr>
+          <tr><td>Median max phone bill</td><td class="num">$50.00</td><td class="num">$52.94</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-sub">Unit economics</h3>
+      <table>
+        <tbody>
+          <tr><td>Incremental phone bill payers</td><td class="num">276</td></tr>
+          <tr><td>Incremental durable users</td><td class="num">83</td></tr>
+          <tr><td>Total treatment payout</td><td class="num">$32,516</td></tr>
+          <tr><td><strong>Cost per incremental payer</strong></td><td class="num"><strong>~$118</strong></td></tr>
+          <tr><td><strong>Cost per incremental durable user</strong></td><td class="num lift-neg"><strong>~$392</strong></td></tr>
+          <tr><td>% of payout to users who would have paid anyway</td><td class="num">~92%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--amber">
+        <strong>Better unit economics, still poor ROI.</strong> Targeting only users without phone bill history nearly triples the per-dollar adoption efficiency (cost-per-incremental-payer: $333 &rarr; $118). Cost per incremental durable user drops from $3,908 to $392 &mdash; closer to the $210 target but still ~1.9&times; over. 92% of the payout still goes to users who would have paid without the bonus.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. Value of a phone bill payer in this cohort ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">4</span> Value of a phone bill payer (within this cohort)</div>
+    <div class="card-body">
+      <h3 class="section-sub">New phone bill payers vs. non-payers</h3>
+      <table>
+        <thead><tr><th></th><th class="num">Paid Phone Bill</th><th class="num">No Phone Bill</th><th class="num">Multiple</th></tr></thead>
+        <tbody>
+          <tr><td>Users (avg of T/C)</td><td class="num">~3,217</td><td class="num">~155,213</td><td class="num lift-flat">&mdash;</td></tr>
+          <tr><td>Avg total deposits</td><td class="num">$1,374</td><td class="num">$434</td><td class="num lift-pos">3.2&times;</td></tr>
+          <tr><td>Avg ancillary deposits</td><td class="num">$132</td><td class="num">$28</td><td class="num lift-pos">4.7&times;</td></tr>
+          <tr><td>Avg POS spend</td><td class="num">$941</td><td class="num">$232</td><td class="num lift-pos">4.1&times;</td></tr>
+          <tr><td>Avg POS transactions</td><td class="num">53.2</td><td class="num">14.3</td><td class="num lift-pos">3.7&times;</td></tr>
+          <tr><td>Avg dashing hours</td><td class="num">52.1</td><td class="num">17.7</td><td class="num lift-pos">2.9&times;</td></tr>
+          <tr><td>% durable</td><td class="num">13.4%</td><td class="num">3.3%</td><td class="num lift-pos">4.1&times;</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout--teal">
+        <strong>New phone bill payers in this cohort are 3-5&times; more valuable</strong> than non-payers across every metric. The bonus successfully attracted high-engagement users to phone bill payment for the first time.
+      </div>
+
+      <h3 class="section-sub">Treatment vs. control among new phone bill payers</h3>
+      <table>
+        <thead><tr><th></th><th class="num">Control Payers</th><th class="num">Treatment Payers</th><th class="num">Diff</th></tr></thead>
+        <tbody>
+          <tr><td>Users</td><td class="num">3,079</td><td class="num">3,355</td><td class="num lift-pos">+276 (+9.0%)</td></tr>
+          <tr><td>Avg total deposits</td><td class="num">$1,390.79</td><td class="num">$1,356.63</td><td class="num lift-flat">&minus;2.5%</td></tr>
+          <tr><td>Avg ancillary deposits</td><td class="num">$138.39</td><td class="num">$124.95</td><td class="num lift-flat">&minus;9.7%</td></tr>
+          <tr><td>Avg POS spend</td><td class="num">$949.38</td><td class="num">$932.15</td><td class="num lift-flat">&minus;1.8%</td></tr>
+          <tr><td>Avg dashing hours</td><td class="num">52.3</td><td class="num">51.9</td><td class="num lift-flat">&minus;0.8%</td></tr>
+          <tr><td>Durable users</td><td class="num">409</td><td class="num">455</td><td class="num lift-pos">+46</td></tr>
+          <tr><td>% durable</td><td class="num">13.28%</td><td class="num">13.56%</td><td class="num lift-flat">+0.28 pp</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout--amber">
+        <strong>Incremental payers are slightly less engaged than organic ones.</strong> Treatment payers have 9.7% lower ancillary deposits and 1.8% lower POS spend than control payers. The marginal users the incentive moved (the +276) are at the lower-engagement end of the new-adopter pool &mdash; engaged enough to pay with a nudge, but not quite as active as those who&rsquo;d do it without one.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. Cross-bill ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">5</span> H4: Cross-bill adoption</div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th></th><th class="num">Control</th><th class="num">Treatment</th><th class="num">Diff</th></tr></thead>
+        <tbody>
+          <tr><td>Users paying any non-phone bill</td><td class="num">14,244 (8.97%)</td><td class="num">14,214 (8.99%)</td><td class="num lift-flat">~0%</td></tr>
+          <tr><td>Avg non-phone bill types per user</td><td class="num">0.098</td><td class="num">0.099</td><td class="num lift-flat">~0%</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout--red">
+        <strong>No cross-bill effect, even in the cleaner cohort.</strong> Paying a phone bill for the first time on Crimson did not lead users to adopt other bill types. H4 is not supported.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 6. Check metrics ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">6</span> Check metrics</div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Metric</th><th class="num">Control</th><th class="num">Treatment</th><th>Flag?</th></tr></thead>
+        <tbody>
+          <tr><td>Avg max phone bill</td><td class="num">$67.58</td><td class="num">$68.54</td><td class="lift-flat">No &mdash; +1.4%, within noise</td></tr>
+          <tr><td>Median max phone bill</td><td class="num">$50.00</td><td class="num">$52.94</td><td class="lift-flat">+$2.94 &mdash; small drift, monitor</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout--teal">
+        <strong>No meaningful gaming.</strong> Phone bill amounts among new adopters are nearly identical to control. The +$2.94 median drift is small and could reflect natural cohort differences rather than gaming.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7. Interpretation ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">7</span> Interpretation</div>
+    <div class="card-body narrative">
+      <h3 class="section-sub">What this cohort tells us</h3>
+      <p>When you remove the ~42K dashers who were already paying their phone bill on Crimson before April, the picture sharpens. The full-cohort 3.5% adoption lift was diluted by these users (who would have paid regardless). On the cohort the bonus was actually designed to activate, the lift is <strong>+9.5% relative</strong> &mdash; a much stronger signal.</p>
+
+      <h3 class="section-sub">But durability still doesn&rsquo;t move</h3>
+      <p>Even on this cleaner cohort, durability is statistically flat (+0.07&nbsp;pp, p&nbsp;&asymp;&nbsp;0.28). Ancillary deposits, POS spend, and dashing hours are all unchanged. <strong>Phone bill payment alone doesn&rsquo;t cause engagement</strong> in low-engagement users within a single month.</p>
+
+      <h3 class="section-sub">The cost story improves but doesn&rsquo;t pay off</h3>
+      <p>Targeting non-historical-payers brings cost-per-incremental-payer from $333 to $118 (a 64% improvement) and cost-per-incremental-durable-user from $3,908 to $392. That last number is closer to the $210 target from the experiment design but still ~1.9&times; over. Even the &ldquo;best&rdquo; cohort doesn&rsquo;t hit ROI within the promo month.</p>
+
+      <h3 class="section-sub">Still pending: May persistence</h3>
+      <p>The strongest case for this incentive would be if treatment new adopters keep paying phone bills in May (no incentive) and accumulate engagement over time. The Week 8 readout (May 29) will tell us whether the 276 incremental payers stick &mdash; that&rsquo;s the only path to a positive ROI given current cost structure.</p>
+    </div>
+  </div>
+
+  <!-- ── 8. Recommendation ── -->
+  <div class="card">
+    <div class="sec-head"><span class="sec-num">8</span> Recommendation</div>
+    <div class="card-body">
+      <p style="font-size:13px; color:var(--muted); margin:0 0 12px;">For this cohort specifically:</p>
+      <div class="decision-grid">
+        <div class="decision-option">
+          <div class="decision-label decision-label--inactive">Evergreen</div>
+          <div class="decision-desc">ROI-positive during promo &mdash; roll out broadly</div>
+        </div>
+        <div class="decision-option decision-option--active">
+          <div class="decision-label decision-label--active">New User Incentive &larr; If May persists</div>
+          <div class="decision-desc">If May data shows treatment new adopters keep paying without an incentive, structure as a F28D acquisition bonus. The cleaner cohort math suggests this is where the bonus has its real value: activating phone bill behavior in users who&rsquo;d never tried it before.</div>
+        </div>
+        <div class="decision-option">
+          <div class="decision-label decision-label--inactive">One-Time Incentive</div>
+          <div class="decision-desc">Not ROI-positive but meaningfully increases adoption</div>
+        </div>
+        <div class="decision-option">
+          <div class="decision-label decision-label--inactive">Redesign</div>
+          <div class="decision-desc">Not ROI-positive and no shift in success metrics</div>
+        </div>
+      </div>
+      <div class="callout callout--teal" style="margin-top:14px;">
+        <strong>Eligibility takeaway:</strong> Future iterations of this bonus should exclude historical phone bill payers from eligibility. That alone would have saved ~$92K (74% of total spend) while preserving most of the adoption lift. The right structure is likely a one-time onboarding bonus tied to first-ever phone bill payment.
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /tab-new -->
+
+<script>
+  (function () {
+    var tabs = document.querySelectorAll(".tab-btn");
+    var panels = document.querySelectorAll(".tab-panel");
+    tabs.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var target = btn.getAttribute("data-tab");
+        tabs.forEach(function (b) { b.classList.remove("is-active"); });
+        panels.forEach(function (p) { p.classList.remove("is-active"); });
+        btn.classList.add("is-active");
+        var panel = document.getElementById(target);
+        if (panel) panel.classList.add("is-active");
+        window.scrollTo({ top: 0, behavior: "instant" });
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
